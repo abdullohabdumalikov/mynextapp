@@ -8,6 +8,7 @@ const links = [
   { name: "Contact", href: "/contact" },
   { name: "Settings", href: "/settings" },
   { name: "Clicker", href: "/clicker" },
+  { name: "Sign In", href: "/form" },
 ];
 
 export default function Header() {
