@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { link } from 'fs/promises';
 
 const links = [
   { name: "Home", href: "/" },
@@ -8,7 +9,6 @@ const links = [
   { name: "Contact", href: "/contact" },
   { name: "Settings", href: "/settings" },
   { name: "Clicker", href: "/clicker" },
-  { name: "Sign In", href: "/form" },
 ];
 
 export default function Header() {
@@ -43,9 +43,15 @@ export default function Header() {
         </nav>
 
         {/* ACTION BUTTON */}
-        <button className="bg-gray-900 text-white px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 hover:bg-blue-600 hover:shadow-lg hover:shadow-blue-200 active:scale-95">
-          Join Now
-        </button>
+        <Link
+          href={'/form'}
+          className="px-4 py-2 text-sm font-medium text-gray-600 transition-all duration-300 hover:text-blue-600 hover:bg-blue-50 rounded-full"
+        >
+          <button className="bg-gray-900 text-white px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 hover:bg-blue-600 hover:shadow-lg hover:shadow-blue-200 active:scale-95">
+            Join Now
+          </button>
+        </Link>
+
 
       </div>
     </header>
