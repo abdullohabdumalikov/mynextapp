@@ -13,7 +13,6 @@ type FormData = {
     confirmPassword: string
 }
 
-// Yup Schema
 const schema = yup.object({
     username: yup
         .string()
@@ -49,11 +48,32 @@ export default function RegisterPage() {
     })
 
     const onSubmit = (data: FormData) => {
-        console.log(data)
+
+        // confirmPassword ni olib tashlaymiz
+        const userData = {
+            username: data.username,
+            email: data.email,
+            password: data.password,
+        }
+
+        // oldingi userlarni olish
+        const oldUsers = localStorage.getItem('users')
+
+        // arrayga aylantirish
+        const users = oldUsers ? JSON.parse(oldUsers) : []
+
+        // yangi user qo‘shish
+        users.push(userData)
+
+        // qayta saqlash
+        localStorage.setItem('users', JSON.stringify(users))
+
+        console.log('Saved Users:', users)
+
+        alert('Account created successfully!')
+
         reset()
     }
-
-    console.log(errors)
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-5">
