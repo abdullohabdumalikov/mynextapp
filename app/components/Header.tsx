@@ -1,6 +1,5 @@
-import React from 'react';
-import Link from 'next/link';
-import { link } from 'fs/promises';
+import React from "react";
+import Link from "next/link";
 
 const links = [
   { name: "Home", href: "/" },
@@ -13,27 +12,24 @@ const links = [
 
 export default function Header() {
   return (
-    <header className="fixed top-0 w-full z-50 border-b border-gray-100 bg-white/70 backdrop-blur-lg">
+    <header className="fixed top-0 w-full z-50 border-b border-[#1a3a2a] bg-[#050a0e]/80 backdrop-blur-lg">
       <div className="max-w-7xl mx-auto h-16 flex items-center justify-between px-6">
-
-        {/* LOGO */}
-        <div className="flex items-center gap-2 group cursor-pointer">
-          <div className="w-8 h-8 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:rotate-12">
-            <span className="text-white font-bold">M</span>
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="w-8 h-8 border border-[#00ff88] flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(0,255,136,0.5)] group-hover:bg-[#00ff88]/10">
+            <span className="text-[#00ff88] font-bold text-sm">{">"}</span>
           </div>
-          <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">
-            MyApp
+          <span className="text-lg font-bold tracking-widest text-[#00ff88] uppercase">
+            MyApp<span className="cursor-blink"></span>
           </span>
-        </div>
+        </Link>
 
-        {/* NAVIGATION */}
         <nav className="hidden md:block">
-          <ul className="flex items-center space-x-1">
+          <ul className="flex items-center gap-1">
             {links.map((link) => (
               <li key={link.name}>
                 <Link
                   href={link.href}
-                  className="px-4 py-2 text-sm font-medium text-gray-600 transition-all duration-300 hover:text-blue-600 hover:bg-blue-50 rounded-full"
+                  className="px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#5a8a6a] transition-all duration-300 hover:text-[#00ff88] hover:bg-[#00ff88]/5 border border-transparent hover:border-[#1a3a2a]"
                 >
                   {link.name}
                 </Link>
@@ -42,17 +38,12 @@ export default function Header() {
           </ul>
         </nav>
 
-        {/* ACTION BUTTON */}
         <Link
-          href={'/form'}
-          className="px-4 py-2 text-sm font-medium text-gray-600 transition-all duration-300 hover:text-blue-600 hover:bg-blue-50 rounded-full"
+          href="/form"
+          className="hack-btn px-5 py-2 text-xs rounded-none"
         >
-          <button className="bg-gray-900 text-white px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 hover:bg-blue-600 hover:shadow-lg hover:shadow-blue-200 active:scale-95">
-            Join Now
-          </button>
+          Join Now
         </Link>
-
-
       </div>
     </header>
   );

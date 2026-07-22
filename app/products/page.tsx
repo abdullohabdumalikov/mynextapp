@@ -5,11 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaCartShopping, FaXmark, FaPlus, FaMinus } from "react-icons/fa6";
 import { motion, AnimatePresence } from "framer-motion";
-
 import useCart from "../store/add";
 
-
-// --- TAYPLAR ---
 type Product = {
   id: number;
   title: string;
@@ -20,12 +17,13 @@ type Product = {
 };
 
 export default function ProductsPage() {
-  const { cart, addToCart, removeFromCart, clearCart } = useCart();
-  const [products, setProducts] = useState<Product[]>([])
+  const { cart, addToCart, removeFromCart, decreaseQty } = useCart();
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // --- MA'LUMOTLARNI YUKLASH ---
+  const cartCount = cart.reduce((sum: number, item: Product & { qty: number }) => sum + item.qty, 0);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -41,98 +39,97 @@ export default function ProductsPage() {
     fetchProducts();
   }, []);
 
-  // --- LOADING EKRANI ---
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="min-h-screen flex items-center justify-center">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-          className="w-12 h-12 border-4 border-black border-t-transparent rounded-full"
+          className="w-12 h-12 border-2 border-[#00ff88] border-t-transparent"
         />
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen bg-[#fafafa] pt-24 pb-20 px-6 font-sans">
+    <main className="min-h-screen pt-24 pb-20 px-6">
       <div className="max-w-7xl mx-auto">
-
-        {/* HEADER SECTION */}
         <header className="flex justify-between items-end mb-16">
           <div>
-
+            <p className="text-[10px] text-[#3a6a4a] uppercase tracking-[0.3em] mb-2">
+              // catalog.load()
+            </p>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-7xl font-black tracking-tighter mt-2"
+              className="text-5xl md:text-7xl font-black tracking-tighter text-[#00ff88]"
             >
               Products
             </motion.h1>
           </div>
 
-          <motion.div
+          <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsCartOpen(true)}
-            className="relative cursor-pointer bg-white p-5 rounded-[2rem] shadow-xl shadow-black/5 border border-gray-100 transition-all"
+            className="relative cursor-pointer hack-card p-5 transition-all"
           >
-            <FaCartShopping className="text-3xl text-black" />
-            <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] w-6 h-6 flex items-center justify-center rounded-full font-bold border-4 border-[#fafafa]">
-              {cart.length}
-            </span>
-          </motion.div>
+            <FaCartShopping className="text-2xl text-[#00ff88]" />
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-[#00ff88] text-[#050a0e] text-[10px] w-6 h-6 flex items-center justify-center font-bold">
+                {cartCount}
+              </span>
+            )}
+          </motion.button>
         </header>
 
-        {/* PRODUCTS GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map((product, index) => (
             <motion.div
               key={product.id}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.6 }}
+              transition={{ delay: index * 0.05, duration: 0.5 }}
               className="group"
             >
-              <div className="bg-white p-8 rounded-[2.5rem] border border-transparent hover:border-black/5 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.08)] transition-all duration-500 h-full flex flex-col relative overflow-hidden">
-
-                {/* Product Image */}
-                <div className="h-64 relative mb-8 flex items-center justify-center">
+              <div className="hack-card p-6 h-full flex flex-col transition-all duration-500">
+                <div className="h-56 relative mb-6 flex items-center justify-center">
                   <Image
                     src={product.image}
                     alt={product.title}
-                    width={220}
-                    height={220}
-                    className="object-contain group-hover:scale-110 transition-transform duration-700 ease-out"
+                    width={200}
+                    height={200}
+                    className="object-contain group-hover:scale-110 transition-transform duration-700"
                   />
                 </div>
 
-                {/* Content */}
                 <div className="flex flex-col flex-grow">
-                  <div className="flex justify-between items-start mb-4">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                  <div className="flex justify-between items-start mb-3">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#00ff88] border border-[#1a3a2a] px-2 py-0.5">
                       {product.category}
                     </span>
-                    <span className="text-xl font-black text-black">${product.price}</span>
+                    <span className="text-lg font-black text-[#00ff88]">${product.price}</span>
                   </div>
 
-                  <h3 className="text-xl font-bold mb-3 line-clamp-1 group-hover:text-blue-600 transition-colors">
+                  <h3 className="text-base font-bold mb-2 line-clamp-1 text-[#c8ffd9] group-hover:text-[#00ff88] transition-colors">
                     {product.title}
                   </h3>
 
-                  <p className="text-gray-400 text-sm line-clamp-2 mb-8 leading-relaxed">
+                  <p className="text-[#5a8a6a] text-xs line-clamp-2 mb-6 leading-relaxed">
                     {product.description}
                   </p>
 
                   <div className="mt-auto flex gap-3">
                     <Link href={`/products/${product.id}`} className="flex-grow">
-                      <button className="w-full py-4 bg-gray-50 text-black text-xs font-black rounded-2xl hover:bg-black hover:text-white transition-all duration-300 uppercase tracking-widest">
+                      <button className="w-full py-3 hack-btn text-[10px]">
                         Details
                       </button>
                     </Link>
-                    <button className="p-4 bg-black text-white rounded-2xl hover:bg-blue-600 transition-colors"
-                      onClick={addToCart.bind(null, product, product.id)}
+                    <button
+                      className="p-3 hack-btn-filled"
+                      onClick={() => addToCart(product)}
+                      aria-label="Add to cart"
                     >
                       <FaPlus />
                     </button>
@@ -144,75 +141,77 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      {/* --- CART DRAWER (SIDEBAR) --- */}
       <AnimatePresence>
         {isCartOpen && (
           <>
-            {/* Background Blur Overlay */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsCartOpen(false)}
-              className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[100]"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
             />
 
-            {/* Sidebar Content */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-[101] shadow-2xl p-10 flex flex-col"
+              className="fixed right-0 top-0 h-full w-full max-w-md bg-[#0a1419] border-l border-[#1a3a2a] z-[101] p-8 flex flex-col"
             >
-              <div className="flex justify-between items-center mb-12">
+              <div className="flex justify-between items-center mb-10">
                 <div>
-                  <h2 className="text-4xl font-black tracking-tighter">Your Cart</h2>
-                  <p className="text-gray-400 text-sm mt-1 font-medium">{cart.length} items selected</p>
+                  <h2 className="text-3xl font-black tracking-tighter text-[#00ff88]">Cart</h2>
+                  <p className="text-[#5a8a6a] text-xs mt-1">{cartCount} items</p>
                 </div>
                 <button
                   onClick={() => setIsCartOpen(false)}
-                  className="p-4 hover:bg-gray-100 rounded-full transition-all active:scale-90"
+                  className="p-3 hover:bg-[#00ff88]/10 transition-all text-[#00ff88]"
                 >
-                  <FaXmark className="text-2xl" />
+                  <FaXmark className="text-xl" />
                 </button>
               </div>
 
-              {/* Cart Items Area */}
               <div className="flex-grow overflow-y-auto">
                 {cart.length === 0 ? (
-                  <div className="h-full flex flex-col items-center justify-center text-gray-400">
-                    <FaCartShopping className="text-6xl mb-4" />
-                    <p className="text-lg font-medium">Your cart is empty</p>
+                  <div className="h-full flex flex-col items-center justify-center text-[#3a6a4a]">
+                    <FaCartShopping className="text-5xl mb-4" />
+                    <p className="text-sm">// cart is empty</p>
                   </div>
                 ) : (
-                  <div className="space-y-6">
-                    {cart.map((item: any, index: number) => (
-                      <div key={index} className="flex items-center gap-4">
+                  <div className="space-y-4">
+                    {cart.map((item: Product & { qty: number }) => (
+                      <div key={item.id} className="flex items-center gap-4 border border-[#1a3a2a] p-3">
                         <Image
                           src={item.image}
                           alt={item.title}
-                          width={80}
-                          height={80}
-                          className="object-contain rounded-lg"
+                          width={60}
+                          height={60}
+                          className="object-contain"
                         />
-                        <div className="flex-1">
-                          <h3 className="font-bold">{item.title}</h3>
-                          <p className="text-sm text-gray-500">${item.price.toFixed(2)}</p>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-bold text-sm text-[#c8ffd9] truncate">{item.title}</h3>
+                          <p className="text-xs text-[#00ff88]">${item.price.toFixed(2)}</p>
                         </div>
                         <div className="flex items-center gap-2">
                           <button
-                            onClick={() => removeFromCart(item.id)}
-                            className="p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors"
+                            onClick={() => decreaseQty(item.id)}
+                            className="p-2 border border-[#1a3a2a] hover:border-[#00ff88] transition-colors text-[#00ff88]"
                           >
-                            <FaMinus className="text-sm" />
+                            <FaMinus className="text-xs" />
                           </button>
-                          <span className="font-bold">{item.qty}</span>
+                          <span className="font-bold text-sm w-4 text-center">{item.qty}</span>
                           <button
-                            onClick={() => addToCart(item, item.id)}
-                            className="p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors"
+                            onClick={() => addToCart(item)}
+                            className="p-2 border border-[#1a3a2a] hover:border-[#00ff88] transition-colors text-[#00ff88]"
                           >
-                            <FaPlus className="text-sm" />
+                            <FaPlus className="text-xs" />
+                          </button>
+                          <button
+                            onClick={() => removeFromCart(item.id)}
+                            className="p-2 text-[#ff3366] hover:bg-[#ff3366]/10 transition-colors text-xs"
+                          >
+                            ✕
                           </button>
                         </div>
                       </div>
@@ -221,13 +220,14 @@ export default function ProductsPage() {
                 )}
               </div>
 
-              {/* Checkout Footer */}
-              <div className="mt-10 pt-10 border-t border-gray-100">
-                <div className="flex justify-between items-center mb-6">
-                  <span className="font-bold text-gray-400">Total:</span>
-                  <span className="text-3xl font-black">$ {cart.reduce((total: any, item: any) => total + (item.price * item.qty), 0).toFixed(2)}</span>
+              <div className="mt-8 pt-6 border-t border-[#1a3a2a]">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-[#5a8a6a] text-sm">Total:</span>
+                  <span className="text-2xl font-black text-[#00ff88]">
+                    ${cart.reduce((total: number, item: Product & { qty: number }) => total + item.price * item.qty, 0).toFixed(2)}
+                  </span>
                 </div>
-                <button className="w-full py-5 bg-black text-white rounded-[1.5rem] font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-black/10">
+                <button className="w-full py-4 hack-btn-filled text-sm">
                   CHECKOUT
                 </button>
               </div>

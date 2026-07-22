@@ -1,68 +1,89 @@
 "use client";
 
 import Link from "next/link";
-
+import { motion } from "framer-motion";
 
 export default function HomeClient() {
-    return (
-        <div className="min-h-screen bg-[#fafafa] pt-16">
-            <main className="relative flex flex-col items-center justify-center px-6 py-24 text-center overflow-hidden">
+  return (
+    <div className="min-h-screen pt-16">
+      <main className="relative flex flex-col items-center justify-center px-6 py-24 text-center overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#00ff88]/5 rounded-full blur-[120px] -z-10"></div>
 
-                {/* Orqa fondagi gradient dog'lar (Animatsiyasiz ham zamonaviy) */}
-                <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-blue-100/50 rounded-full blur-3xl -z-10 animate-pulse"></div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="inline-flex items-center gap-2 px-4 py-1.5 border border-[#1a3a2a] bg-[#0a1419]/80 text-[#00ff88] text-xs font-bold mb-8 uppercase tracking-widest"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full bg-[#00ff88] opacity-50"></span>
+            <span className="relative inline-flex h-2 w-2 bg-[#00ff88] shadow-[0_0_6px_#00ff88]"></span>
+          </span>
+          [ V2.0 // SYSTEM ONLINE ]
+        </motion.div>
 
-                {/* BADGE (Kichik belgi) */}
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-bold mb-8 transition-transform hover:scale-105 cursor-default">
-                    <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                    </span>
-                    V2.0 IS NOW LIVE
-                </div>
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-4xl md:text-7xl font-black mb-6 tracking-tighter leading-[1.1]"
+        >
+          <span className="text-[#3a6a4a]">{"> "}</span>
+          <span className="glitch-text" data-text="Build your next">
+            Build your next
+          </span>
+          <br />
+          <span className="text-[#00ff88] text-shadow-[0_0_30px_rgba(0,255,136,0.3)]">
+            big idea fast
+          </span>
+          <span className="text-[#3a6a4a]">{";"}</span>
+        </motion.h1>
 
-                {/* MAIN TITLE */}
-                <h1 className="text-5xl md:text-8xl font-black text-gray-900 mb-6 tracking-tighter leading-[1.1]">
-                    Build your next <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 transition-all duration-500">
-                        big idea fast.
-                    </span>
-                </h1>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-[#5a8a6a] max-w-xl text-sm md:text-base mb-10 leading-relaxed"
+        >
+          // Everything you need to ship your project today.
+          <br />
+          // Clean code, modern design, production ready.
+        </motion.p>
 
-                {/* DESCRIPTION */}
-                <p className="text-gray-500 max-w-xl text-lg md:text-xl mb-10 leading-relaxed">
-                    Everything you need to ship your project today.
-                    Clean code, modern design, and ready for production.
-                </p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="flex flex-col sm:flex-row items-center gap-4"
+        >
+          <Link href="/about" className="hack-btn-filled w-full sm:w-auto px-10 py-4 text-sm">
+            Get Started
+          </Link>
+          <Link href="/contact" className="hack-btn w-full sm:w-auto px-10 py-4 text-sm">
+            View Demo
+          </Link>
+        </motion.div>
 
-                {/* BUTTONS */}
-                <div className="flex flex-col sm:flex-row items-center gap-4">
-                    <Link
-                        href="/about"
-                        className="w-full sm:w-auto px-10 py-4 bg-blue-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-blue-200 transition-all duration-300 hover:bg-blue-700 hover:-translate-y-1 active:translate-y-0"
-                    >
-                        Get Started Free
-                    </Link>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="mt-20 pt-10 border-t border-[#1a3a2a] w-full max-w-4xl"
+        >
+          <p className="text-[10px] font-bold text-[#3a6a4a] uppercase tracking-[0.3em] mb-6">
+            // Trusted by developers
+          </p>
+          <div className="flex flex-wrap justify-center gap-8 opacity-40">
+            <div className="text-sm font-bold text-[#00ff88] tracking-widest">TechFlow</div>
+            <div className="text-sm font-bold text-[#00ff88] tracking-widest">DevStack</div>
+            <div className="text-sm font-bold text-[#00ff88] tracking-widest">NextGen</div>
+          </div>
+        </motion.div>
 
-                    <Link
-                        href="/contact"
-                        className="w-full sm:w-auto px-10 py-4 bg-white text-gray-900 border border-gray-200 rounded-2xl font-bold text-lg transition-all duration-300 hover:bg-gray-50 hover:border-gray-300 active:scale-95"
-                    >
-                        View Demo
-                    </Link>
-                </div>
-
-                {/* TRUST BADGE (Ixtiyoriy) */}
-                <div className="mt-20 pt-10 border-t border-gray-100 w-full max-w-4xl">
-                    <p className="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-6">Trusted by developers</p>
-                    <div className="flex flex-wrap justify-center gap-8 grayscale opacity-50">
-                        {/* Bu yerga logolar qo'yish mumkin */}
-                        <div className="text-xl font-bold italic">TechFlow</div>
-                        <div className="text-xl font-bold italic">DevStack</div>
-                        <div className="text-xl font-bold italic">NextGen</div>
-                    </div>
-                </div>
-            </main>
-
+        <div className="absolute bottom-10 left-6 text-[10px] text-[#3a6a4a] hidden md:block font-mono">
+          <p>root@myapp:~$ status --check</p>
+          <p className="text-[#00ff88]">[OK] All systems nominal</p>
         </div>
-    );
+      </main>
+    </div>
+  );
 }
